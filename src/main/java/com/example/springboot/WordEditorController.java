@@ -4,24 +4,26 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import com.syncfusion.ej2.wordprocessor.WordProcessorHelper;
 import com.syncfusion.ej2.wordprocessor.FormatType;
 
+@CrossOrigin
 @RestController
+@RequestMapping("/api/wordeditor")
 public class WordEditorController {
 
-	@CrossOrigin(origins = "*", allowedHeaders = "*")
-	@GetMapping("/api/wordeditor/test")
+	
+	@GetMapping("/test")
 	public String test() {
 		System.out.println("==== in test ====");
 		return "{\"sections\":[{\"blocks\":[{\"inlines\":[{\"text\":\"Hello World\"}]}]}]}";
 	}
-	
-	@CrossOrigin(origins = "*", allowedHeaders = "*")
-	@PostMapping("/api/wordeditor/Import")
+		
+	@PostMapping("/Import")
 	public String uploadFile(@RequestParam("files") MultipartFile file) throws Exception {
 		try {
 			return WordProcessorHelper.load(file.getInputStream(), FormatType.Docx);
@@ -30,17 +32,15 @@ public class WordEditorController {
 			return "{\"sections\":[{\"blocks\":[{\"inlines\":[{\"text\":" + e.getMessage() + "}]}]}]}";
 		}
 	}
-
-	@CrossOrigin(origins = "*", allowedHeaders = "*")
-	@PostMapping("/api/wordeditor/RestrictEditing")
+	
+	@PostMapping("/RestrictEditing")
 	public String[] restrictEditing(@RequestBody CustomRestrictParameter param) throws Exception {
 		if (param.passwordBase64 == "" && param.passwordBase64 == null)
 			return null;
 		return WordProcessorHelper.computeHash(param.passwordBase64, param.saltBase64, param.spinCount);
 	}
-
-	@CrossOrigin(origins = "*", allowedHeaders = "*")
-	@PostMapping("/api/wordeditor/SystemClipboard")
+	
+	@PostMapping("/SystemClipboard")
 	public String systemClipboard(@RequestBody CustomParameter param) {
 		if (param.content != null && param.content != "") {
 			try {
