@@ -1,27 +1,32 @@
 plugins {
-	id 'org.springframework.boot' version '2.3.3.RELEASE'
+	id 'org.springframework.boot' version '2.2.0.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.8.RELEASE'
 	id 'java'
 }
 
-group = 'com.example'
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'war'
+apply plugin: 'application'
+
+group = 'com.syncfusion'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
+mainClassName = "com.syncfusion.ej2javawebservices.Ej2JavaWebservicesApplication"
 
 repositories {
 	mavenCentral()
 }
 
 dependencies {
-	// tag::actuator[]
-	implementation 'org.springframework.boot:spring-boot-starter-actuator'
-	// end::actuator[]
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	// tag::tests[]
+	implementation 'org.springframework.boot:spring-boot-starter-web'	
+	compile files('libs/syncfusion-ej2-wordprocessor-18.1.0.1.jar')
+	compile 'com.google.code.gson:gson:2.8.6'
+	testImplementation 'org.apache.httpcomponents:httpclient'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
-	// end::tests[]
 }
 
 test {
